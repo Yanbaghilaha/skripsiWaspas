@@ -1,0 +1,62 @@
+{
+    "Minat Matkul": {
+        "bobot": 3,
+        "jenis": "Benefit",
+        "nama": "Minat Matkul",
+        "subKriteria": {
+            "Lumayan Minat": 3,
+            "Minat": 4,
+            "Sangat Minat": 5,
+            "Sedikit Minat": 2,
+            "Tidak Minat": 1
+        }
+    },
+    "Nilai Akademis": {
+        "bobot": 0.8,
+        "jenis": "Benefit",
+        "nama": "Nilai Akademiss",
+        "subKriteria": {
+            "A": 5,
+            "B": 4,
+            "C": 3,
+            "D": 2,
+            "E": 1
+        }
+    },
+    "Paham Matkul": {
+        "bobot": 2.2,
+        "jenis": "Benefit",
+        "nama": "Paham Matkul",
+        "subKriteria": {
+            "Lumayan Paham": 3,
+            "Paham": 4,
+            "Sangat Paham": 5,
+            "Sedikit Paham": 2,
+            "Tidak Paham": 1
+        }
+    },
+    "Penguasaan Matkul": {
+        "bobot": 1.5,
+        "jenis": "Benefit",
+        "nama": "Penguasaan Matkul",
+        "subKriteria": {
+            "Lumayan Menguasi": 3,
+            "Menguasi": 4,
+            "Sangat Menguasi": 5,
+            "Sedikit Menguasi": 2,
+            "Tidak Menguasi": 1
+        }
+    },
+    "Penguasan Metode": {
+        "bobot": 2.5,
+        "jenis": "Benefit",
+        "nama": "Penguasan Metode",
+        "subKriteria": {
+            "Lumayan Menguasi": 3,
+            "Menguasi": 4,
+            "Sangat Menguasi": 5,
+            "Sedikit Menguasi": 2,
+            "Tidak Menguasi": 1
+        }
+    }
+}
