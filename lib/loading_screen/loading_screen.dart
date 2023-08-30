@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:spk_app/final_conclusion.dart';
 
 import 'package:spk_app/material/colors.dart';
 
@@ -10,10 +9,6 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 3500), () {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const FinalConclusion()));
-    });
     return Scaffold(
       backgroundColor: AppColors.blue,
       body: Center(

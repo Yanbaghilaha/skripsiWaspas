@@ -70,7 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '369236225130',
     projectId: 'spkproject-3df9a',
     storageBucket: 'spkproject-3df9a.appspot.com',
-    iosClientId: '369236225130-q3tqmspakpsdga0n91su3lr4a33irku8.apps.googleusercontent.com',
+    iosClientId:
+        '369236225130-q3tqmspakpsdga0n91su3lr4a33irku8.apps.googleusercontent.com',
     iosBundleId: 'com.example.spkApp',
   );
 }

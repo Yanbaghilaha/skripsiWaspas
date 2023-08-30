@@ -243,7 +243,7 @@ class _ScalaOpiniState extends State<ScalaOpini> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Gaskeun Atuh",
+                                    "Generate",
                                     style: GoogleFonts.lato(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w800,

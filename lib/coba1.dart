@@ -21,9 +21,11 @@ class _JsonDisplayWidgetState extends State<JsonDisplayWidget> {
     // Mengambil data dari koleksi "alternatif"
     QuerySnapshot alternatifSnapshot =
         await firestore.collection('alternatif').get();
-    alternatifData = Map.fromEntries(alternatifSnapshot.docs.map(
-      (doc) => MapEntry(doc.id, doc.data()),
-    ));
+    alternatifData = Map.fromEntries(
+      alternatifSnapshot.docs.map(
+        (doc) => MapEntry(doc.id, doc.data()),
+      ),
+    );
 
     // Mengambil data dari koleksi "kriteria"
     QuerySnapshot kriteriaSnapshot =

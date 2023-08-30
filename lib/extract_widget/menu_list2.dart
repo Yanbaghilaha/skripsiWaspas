@@ -62,7 +62,7 @@ class MenuList2 extends StatelessWidget {
           Image.asset(
             picture,
             fit: BoxFit.fill,
-            width: 1000,
+            width: 200,
           ),
           const SizedBox(
             height: 20,

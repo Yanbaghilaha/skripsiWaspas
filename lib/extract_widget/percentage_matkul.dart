@@ -8,9 +8,11 @@ class PercentageMatkul extends StatelessWidget {
     super.key,
     required this.namaMatkul,
     required this.percentage,
+    required this.lengthPercent,
   });
 
   final String namaMatkul, percentage;
+  final double lengthPercent;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,7 @@ class PercentageMatkul extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 90,
+                width: lengthPercent * 75,
                 height: 6,
                 decoration: BoxDecoration(
                   color: AppColors.blue,

@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
-import 'package:spk_app/skala_opini/introduction/introduction1.dart';
+import 'package:spk_app/skala_opini/introduction1.dart';
 import 'admin/daftar_kriteria.dart';
 import 'admin/alternatifOrTemaSkripsi/daftar_tema_skripsi.dart';
 import 'admin/judulmahasiswa/daftar_judul_mahasiswa.dart';
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   lottieAssetsVisible: true,
                                   isTextField: false,
                                   height: 436,
-                                  namaTema: "Da lah, disini aja coba, Maksaa!!",
+                                  namaTema: "Anda Yakin Ingin Logout?",
                                   hintTextTextField: "Tambah Tema Skripsi",
                                   showSuffixIconTextField: false,
                                   textButton: "Logout",

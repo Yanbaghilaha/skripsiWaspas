@@ -7,6 +7,7 @@ import 'package:iconly/iconly.dart';
 import 'package:lottie/lottie.dart';
 import 'package:spk_app/extract_widget/top_navbar.dart';
 
+import '../../extract_widget/pop_up_success.dart';
 import '../../extract_widget/text_field_popup.dart';
 import '../../material/colors.dart';
 
@@ -37,28 +38,6 @@ class _DaftarTemaSkripsiState extends State<DaftarTemaSkripsi> {
       });
     } catch (e) {
       print("Error: $e");
-    }
-  }
-
-  void changeDocumentName(String oldName, String newName) async {
-    CollectionReference alternatifCollection =
-        FirebaseFirestore.instance.collection('alternatif');
-
-    // Get data from the old document
-    DocumentSnapshot oldDocument =
-        await alternatifCollection.doc(oldName).get();
-    Map<String, dynamic> oldData = oldDocument.data() as Map<String, dynamic>;
-
-    if (oldData.isNotEmpty) {
-      // Create a new document with the new name and old data
-      await alternatifCollection.doc(newName).set(oldData);
-
-      // Delete the old document
-      await alternatifCollection.doc(oldName).delete();
-
-      print('Document name changed successfully.');
-    } else {
-      print('Old document not found or has no data.');
     }
   }
 
@@ -162,21 +141,93 @@ class _DaftarTemaSkripsiState extends State<DaftarTemaSkripsi> {
                           children: [
                             Flexible(
                               flex: 10,
-                              child: Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColors.blue,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 20, horizontal: 10),
-                                  child: Text(
-                                    matkulList[index],
-                                    style: GoogleFonts.lato(
-                                      fontSize: 18,
-                                      color: AppColors.white,
-                                      fontWeight: FontWeight.w800,
+                              child: GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    builder: (BuildContext context) {
+                                      TextEditingController controller =
+                                          TextEditingController(
+                                        text: matkulList[index],
+                                      ); // Menggunakan TextEditingController
+
+                                      return MyPopup(
+                                        controller:
+                                            controller, // Menggunakan controller yang sudah didefinisikan
+                                        isTextField: true,
+                                        onPressed: () async {
+                                          String newDocumentName =
+                                              controller.text;
+
+                                          if (newDocumentName.isNotEmpty &&
+                                              newDocumentName !=
+                                                  matkulList[index]) {
+                                            editAlternatif(
+                                              matkulList[index],
+                                              newDocumentName,
+                                            );
+                                            Navigator.pop(context);
+                                            setState(() {});
+
+                                            showModalBottomSheet(
+                                              context: context,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                              builder: (context) {
+                                                return const PopUp3(
+                                                  text: "Sukses Diedit",
+                                                  lottieAssets:
+                                                      "assets/animation/checklist.json",
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            Navigator.pop(context);
+                                            showModalBottomSheet(
+                                              context: context,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                              builder: (context) {
+                                                return const PopUp3(
+                                                  text:
+                                                      "Tidak Ada Data Yang Ditambahkan",
+                                                  lottieAssets:
+                                                      "assets/animation/sad-animation.json",
+                                                );
+                                              },
+                                            );
+                                          }
+                                        },
+                                        judul: "Edit Tema Skripsi",
+                                        hintText: "Masukan Tema Skripsi",
+                                        buttonText: "Edit",
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: AppColors.blue,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 20, horizontal: 10),
+                                    child: Text(
+                                      matkulList[index],
+                                      style: GoogleFonts.lato(
+                                        fontSize: 18,
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.w800,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -206,7 +257,6 @@ class _DaftarTemaSkripsiState extends State<DaftarTemaSkripsi> {
                                             TextEditingController(
                                           text: matkulList[index],
                                         ); // Menggunakan TextEditingController
-
                                         return MyPopup(
                                           controller:
                                               controller, // Menggunakan controller yang sudah didefinisikan
@@ -222,12 +272,40 @@ class _DaftarTemaSkripsiState extends State<DaftarTemaSkripsi> {
                                                 matkulList[index],
                                                 newDocumentName,
                                               );
+                                              Navigator.pop(context);
+                                              setState(() {});
 
-                                              Navigator.pop(
-                                                  context); // Tutup bottom sheet setelah berhasil diperbarui
+                                              showModalBottomSheet(
+                                                context: context,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                ),
+                                                builder: (context) {
+                                                  return const PopUp3(
+                                                    text: "Sukses Diedit",
+                                                    lottieAssets:
+                                                        "assets/animation/checklist.json",
+                                                  );
+                                                },
+                                              );
                                             } else {
-                                              print(
-                                                  "Tidak ada perubahan atau data kosong");
+                                              Navigator.pop(context);
+                                              showModalBottomSheet(
+                                                context: context,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                ),
+                                                builder: (context) {
+                                                  return const PopUp3(
+                                                    text:
+                                                        "Tidak Ada Data Yang Ditambahkan",
+                                                    lottieAssets:
+                                                        "assets/animation/sad-animation.json",
+                                                  );
+                                                },
+                                              );
                                             }
                                           },
                                           judul: "Edit Tema Skripsi",
@@ -276,6 +354,22 @@ class _DaftarTemaSkripsiState extends State<DaftarTemaSkripsi> {
                                           onPressed: () {
                                             hapusAlernatif(matkulList[index]);
                                             Navigator.pop(context);
+                                            setState(() {});
+
+                                            showModalBottomSheet(
+                                              context: context,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                              builder: (context) {
+                                                return const PopUp3(
+                                                  text: "Sukses Dihapus",
+                                                  lottieAssets:
+                                                      "assets/animation/checklist.json",
+                                                );
+                                              },
+                                            );
                                           },
                                           judul:
                                               "Apa Anda Yakin Ingin Menghapusnya",
@@ -351,11 +445,26 @@ class _DaftarTemaSkripsiState extends State<DaftarTemaSkripsi> {
                                   _fetchAlternatives();
                                 }
                                 Navigator.pop(context);
+                                setState(() {});
+
+                                showModalBottomSheet(
+                                  context: context,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  builder: (context) {
+                                    return const PopUp3(
+                                      text: "Sukses Ditambahkan",
+                                      lottieAssets:
+                                          "assets/animation/checklist.json",
+                                    );
+                                  },
+                                );
                               },
                             );
                           },
                         );
-                        // ignore: avoid_print
+
                         print(value);
                       },
                       child: Container(
@@ -406,13 +515,15 @@ class MyPopup extends StatelessWidget {
     this.height = 300,
     this.buttonColor = AppColors.blue,
     this.onChange,
+    this.onlyHaveOneButton = true,
+    this.judulColor = AppColors.blue,
   });
 
   final TextEditingController controller;
   final VoidCallback onPressed;
   final String judul, hintText, buttonText, imageAssets;
-  final Color buttonColor;
-  final bool isTextField;
+  final Color buttonColor, judulColor;
+  final bool isTextField, onlyHaveOneButton;
   final double height;
   final Function? onChange;
   @override
@@ -429,6 +540,7 @@ class MyPopup extends StatelessWidget {
               style: GoogleFonts.lato(
                 fontWeight: FontWeight.bold,
                 fontSize: 26,
+                color: judulColor,
               ),
             ),
             isTextField
@@ -440,66 +552,94 @@ class MyPopup extends StatelessWidget {
                     },
                   )
                 : LottieBuilder.asset(imageAssets, height: 300),
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                        ),
-                        child: Text(
-                          "Batal",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.lato(
-                            fontSize: 24,
-                            color: Colors.black38,
-                            fontWeight: FontWeight.w600,
+            onlyHaveOneButton
+                ? Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20,
+                              ),
+                              child: Text(
+                                "Batal",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.lato(
+                                  fontSize: 24,
+                                  color: Colors.black38,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
 
-                //right button
-                Expanded(
-                  child: TextButton(
-                    onPressed: onPressed,
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: buttonColor,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 20,
+                      //right button
+                      Expanded(
+                        child: TextButton(
+                          onPressed: onPressed,
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: buttonColor,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20,
+                                horizontal: 20,
+                              ),
+                              child: Text(
+                                buttonText,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.lato(
+                                  fontSize: 24,
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                        child: Text(
-                          buttonText,
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.lato(
-                            fontSize: 24,
-                            color: AppColors.white,
-                            fontWeight: FontWeight.w600,
+                      ),
+                    ],
+                  )
+                : Expanded(
+                    child: TextButton(
+                      onPressed: onPressed,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: buttonColor,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 20,
+                            horizontal: 20,
+                          ),
+                          child: Text(
+                            buttonText,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.lato(
+                              fontSize: 24,
+                              color: AppColors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
           ],
         ),
       ),

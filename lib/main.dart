@@ -1,10 +1,13 @@
 // import 'package:firebase_core/firebase_core.dart';
+// ignore_for_file: avoid_print
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:spk_app/admin/daftar_kriteria.dart';
+import 'package:spk_app/home_screen.dart';
 import 'package:spk_app/material/colors.dart';
-
-import 'opini_scala.dart';
+import 'package:spk_app/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,15 +29,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      routes: {
+        '/homeScreen': (context) => const HomeScreen(),
+        '/daftarKriteria': (context) => const DaftarKriteria(),
+      },
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.light,
+            statusBarBrightness: Brightness.dark,
           ),
         ),
         scaffoldBackgroundColor: AppColors.primary,
       ),
-      home: const ScalaOpini(),
+      home: const SplashScreen(),
       //SplashScreen Ori
     );
   }

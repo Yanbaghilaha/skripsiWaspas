@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
-import 'package:spk_app/opini_scala.dart';
 
-import '../../material/colors.dart';
+import '../material/colors.dart';
+import 'implementasiWaspas.dart';
 
 class Introduction1 extends StatefulWidget {
   const Introduction1({super.key});
@@ -206,7 +206,8 @@ class _Introduction1State extends State<Introduction1> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const ScalaOpini(),
+                                  builder: (context) =>
+                                      const DecisionMakingPageReal(),
                                 ),
                               );
                             },
@@ -309,7 +310,7 @@ class _Introduction1State extends State<Introduction1> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Selantutnya",
+                                    "Selanjutnya",
                                     style: GoogleFonts.lato(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w800,

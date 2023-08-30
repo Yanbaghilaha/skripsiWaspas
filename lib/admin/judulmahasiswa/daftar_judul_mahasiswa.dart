@@ -1,12 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
-
-import 'package:spk_app/models/list_judul_mahasiswa.dart';
-
-import '../../material/colors.dart';
-
-import 'lihat_judul_mahasiswa.dart';
+import 'package:spk_app/admin/judulmahasiswa/lihat_judul_mahasiswa.dart';
+import 'package:spk_app/extract_widget/top_navbar.dart';
+import 'package:spk_app/material/colors.dart';
 
 class DaftarJudulMahasiswa extends StatefulWidget {
   const DaftarJudulMahasiswa({super.key});
@@ -18,120 +16,123 @@ class DaftarJudulMahasiswa extends StatefulWidget {
 class _DaftarJudulMahasiswaState extends State<DaftarJudulMahasiswa> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      IconlyLight.arrow_left_2,
-                      color: AppColors.white,
-                      size: 28,
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('users').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+
+          if (!snapshot.hasData) {
+            return const Text('No data available');
+          }
+
+          final users = snapshot.data!.docs;
+
+          return Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+                child: Column(
+                  children: [
+                    const MyNavBar(judul: "Daftar Judul Mahasiswa"),
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ),
-                  Text(
-                    "Daftar Judul Mahasiswa",
-                    style: GoogleFonts.lato(
-                      color: AppColors.orange,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 22,
-                    ),
-                  ),
-                  const Icon(null),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Flexible(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LihatJudulMahasiswa(),
-                      ),
-                    );
-                  },
-                  child: ListView.separated(
-                    itemCount: daftarJudulMahasiswa.length,
-                    separatorBuilder: (context, index) {
-                      return Container(
-                        height: 16,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xff282B34),
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1, color: Colors.white30),
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: AppColors.blue,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
-                                child: Center(
-                                  child: Text(
-                                    daftarJudulMahasiswa[index].tema,
-                                    style: GoogleFonts.lato(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.white,
-                                    ),
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          final userData =
+                              users[index].data() as Map<String, dynamic>;
+                          final nama = userData['nama'] ?? 'Unknown';
+                          final tentangJudulData =
+                              userData['tentangJudul'] ?? {};
+                          // final judul = tentangJudulData['judul'] ?? '';
+                          final tema = tentangJudulData['tema'] ?? '';
+                          // final deskripsi = tentangJudulData['deskripsi'] ?? '';
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LihatJudulMahasiswa(
+                                    nama: nama,
+                                    judul:
+                                        userData['tentangJudul']['judul'] ?? '',
+                                    tema: tema,
+                                    tentangJudul: userData['tentangJudul']
+                                            ['deskripsi'] ??
+                                        '',
                                   ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              width: 280,
-                              child: Text(
-                                daftarJudulMahasiswa[index].namaMahasiswa,
-                                style: GoogleFonts.lato(
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.white,
-                                  fontSize: 18,
+                              );
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: AppColors.border,
                                 ),
-                                softWrap: true,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                                color: Colors.white10,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 16, horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          nama,
+                                          style: GoogleFonts.lato(
+                                            color: AppColors.white,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 24,
+                                          ),
+                                        ),
+                                        Text(
+                                          tema,
+                                          style: GoogleFonts.lato(
+                                            color: Colors.white54,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Icon(
+                                      IconlyLight.arrow_right,
+                                      size: 24,
+                                      color: AppColors.white,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                            const Icon(
-                              IconlyLight.arrow_right_2,
-                              color: AppColors.white,
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            height: 20,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 }

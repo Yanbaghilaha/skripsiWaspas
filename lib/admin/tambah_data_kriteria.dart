@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:spk_app/admin/tambah_sub_kriteria.dart';
+import 'package:spk_app/admin/tmbh_samplesub.dart';
 import 'package:spk_app/extract_widget/top_navbar.dart';
 import 'package:spk_app/material/colors.dart';
 
@@ -197,7 +197,9 @@ class _TambahDataKriteriaState extends State<TambahDataKriteria> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const TambahSubKriteria(),
+                                          TambahSubKriteriaSample(
+                                        kriteria: kriteria.text,
+                                      ),
                                     ),
                                   );
                                 },

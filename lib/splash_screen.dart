@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:spk_app/controller/auth_page.dart';
 import 'package:spk_app/pageview/splash1.dart';
 import 'package:spk_app/pageview/splash2.dart';
 import 'package:spk_app/pageview/splash3.dart';
@@ -63,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const Login();
+                                return const AuthPage();
                               },
                             ),
                           );

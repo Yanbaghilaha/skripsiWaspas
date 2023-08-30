@@ -3,23 +3,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:spk_app/material/colors.dart';
 
 class MyTextField extends StatelessWidget {
-  const MyTextField({
-    super.key,
-    this.hintText = "",
-    this.labelText = "",
-    this.maxLines = 1,
-    this.readOnly = false,
-    this.showPassword = false,
-    required this.controller,
-    this.keyboardType = false,
-    this.autoFill,
-    this.showHint = false,
-    this.textController = "",
-    this.isShowLabelText = false,
-    this.textAlign = TextAlign.start,
-    this.textColor = AppColors.white2,
-    this.onChanged,
-  });
+  const MyTextField(
+      {super.key,
+      this.hintText = "",
+      this.labelText = "",
+      this.maxLines = 1,
+      this.readOnly = false,
+      this.showPassword = false,
+      required this.controller,
+      this.keyboardType = false,
+      this.autoFill,
+      this.showHint = false,
+      this.textController = "",
+      this.isShowLabelText = false,
+      this.textAlign = TextAlign.start,
+      this.textColor = AppColors.white2,
+      this.onChanged,
+      this.onEditingComplete});
 
   final TextEditingController controller;
   final String hintText, labelText, textController;
@@ -28,14 +28,18 @@ class MyTextField extends StatelessWidget {
   final TextAlign textAlign;
   final Color textColor;
   final bool readOnly, showPassword, keyboardType, showHint, isShowLabelText;
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onChanged, onEditingComplete;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       // width: double.infinity,
       child: TextField(
+        onEditingComplete: () {
+          onEditingComplete;
+        },
         textAlign: textAlign,
+        maxLines: maxLines,
         autofocus: true,
         controller: controller,
         readOnly: readOnly,

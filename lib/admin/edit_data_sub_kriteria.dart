@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconly/iconly.dart';
 import 'package:spk_app/extract_widget/text_field.dart';
 import 'package:spk_app/extract_widget/top_navbar.dart';
 import 'package:spk_app/material/colors.dart';
@@ -21,26 +22,6 @@ class EditDataSubKriteriaState extends State<EditDataSubKriteria> {
   final TextEditingController controller = TextEditingController();
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _nilaiController = TextEditingController();
-
-  List atribut = [
-    [
-      false,
-      "Benefit",
-    ],
-    [
-      false,
-      "Cost",
-    ],
-  ];
-
-  void temaTypeSelected(int index) {
-    setState(() {
-      for (int i = 0; i < atribut.length; i++) {
-        atribut[i][0] = false;
-      }
-      atribut[index][0] = true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +64,7 @@ class EditDataSubKriteriaState extends State<EditDataSubKriteria> {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                                  const EdgeInsets.symmetric(horizontal: 70),
                               child: Text(
                                 "Nilai",
                                 style: GoogleFonts.lato(
@@ -136,7 +117,34 @@ class EditDataSubKriteriaState extends State<EditDataSubKriteria> {
                                       labelText: "Data Sub Kriteria",
                                       controller: controller,
                                     ),
-                                  )
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        // hapusSubKriteria(subKriteriaName);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: AppColors.red,
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 20, horizontal: 5),
+                                          child: Center(
+                                            child: Icon(
+                                              IconlyBold.delete,
+                                              color: AppColors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               );
                             },
