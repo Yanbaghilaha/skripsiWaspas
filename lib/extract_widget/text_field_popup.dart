@@ -11,19 +11,21 @@ class TextFieldPopUp extends StatelessWidget {
     required this.hintText,
     required this.controller,
     this.onChange,
+    this.maxLines = 1,
   });
 
   final bool showSuffixIcon;
   final TextEditingController controller;
   final String hintText;
   final Function? onChange;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       autofocus: true,
-      keyboardType: TextInputType.number,
+      // keyboardType: TextInputType.number,
       style: GoogleFonts.lato(
         textStyle: const TextStyle(
           color: Colors.black,
@@ -35,6 +37,7 @@ class TextFieldPopUp extends StatelessWidget {
         onChange!(v);
       },
       showCursor: true,
+      maxLines: maxLines,
       cursorWidth: 4,
       cursorColor: AppColors.blue,
       decoration: InputDecoration(

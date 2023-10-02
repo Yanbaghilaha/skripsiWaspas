@@ -7,12 +7,14 @@ class PercentageMatkul extends StatelessWidget {
   const PercentageMatkul({
     super.key,
     required this.namaMatkul,
+    this.forHistory = false,
     required this.percentage,
     required this.lengthPercent,
   });
 
   final String namaMatkul, percentage;
   final double lengthPercent;
+  final bool forHistory;
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +68,23 @@ class PercentageMatkul extends StatelessWidget {
                   borderRadius: BorderRadius.circular(40),
                 ),
               ),
-              Container(
-                width: lengthPercent * 75,
-                height: 6,
-                decoration: BoxDecoration(
-                  color: AppColors.blue,
-                  borderRadius: BorderRadius.circular(40),
-                ),
-              ),
+              forHistory
+                  ? Container(
+                      width: lengthPercent * 55,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: AppColors.blue,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                    )
+                  : Container(
+                      width: lengthPercent * 75,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: AppColors.blue,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                    )
             ],
           )
         ],

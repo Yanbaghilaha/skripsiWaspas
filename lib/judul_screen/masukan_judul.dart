@@ -11,295 +11,6 @@ import 'package:spk_app/loading_screen/loading_screen_upload.dart';
 import '../extract_widget/tema_skripsi.dart';
 import '../material/colors.dart';
 
-// class MasukanJudul extends StatefulWidget {
-//   const MasukanJudul({super.key});
-
-//   @override
-//   State<MasukanJudul> createState() => _MasukanJudulState();
-// }
-
-// class _MasukanJudulState extends State<MasukanJudul> {
-//   String activeUserEmail = ""; // Simpan email user yang aktif
-//   final TextEditingController judul = TextEditingController();
-//   final TextEditingController deskripsiJudul = TextEditingController();
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _getActiveUserEmail(); // Panggil metode untuk mendapatkan email user yang aktif
-//     getTemaSkripsiData(); // Panggil metode untuk mengambil data tema skripsi dari Firestore
-//   }
-
-//   void _getActiveUserEmail() {
-//     // Mendapatkan informasi user yang sedang aktif dari Firebase Authentication
-//     final user = FirebaseAuth.instance.currentUser;
-//     if (user != null) {
-//       setState(() {
-//         activeUserEmail = user.email ?? ""; // Simpan email user yang aktif
-//       });
-//     }
-//   }
-
-//   void simpanData() async {
-//     try {
-//       // Data yang akan disimpan ke Firestore
-//       final newData = {
-//         'nama': activeUserEmail,
-//         'tentangJudul': {
-//           'deskripsi': deskripsiJudul.text,
-//           'judul': judul.text,
-//           'tema': temaSkripsi.firstWhere((item) => item['isSelected'],
-//               orElse: () => {'nama': ''})['nama'],
-//         },
-//       };
-
-//       // Simpan data ke Firestore pada koleksi user yang aktif
-//       await FirebaseFirestore.instance
-//           .collection('users')
-//           .doc(activeUserEmail)
-//           .set(newData);
-
-//       Navigator.push(
-//         context,
-//         MaterialPageRoute(builder: (context) => const LoadingScreen2()),
-//       );
-//     } catch (error) {
-//       print('Error saving data: $error');
-//     }
-//   }
-
-//   List<Map<String, dynamic>> temaSkripsi = [];
-
-//   void getTemaSkripsiData() async {
-//     try {
-//       final QuerySnapshot querySnapshot =
-//           await FirebaseFirestore.instance.collection('alternatif').get();
-
-//       final List<Map<String, dynamic>> fetchedTemaSkripsi =
-//           querySnapshot.docs.map((doc) => {doc.id: doc.data()}).toList();
-
-//       setState(() {
-//         temaSkripsi = fetchedTemaSkripsi;
-//       });
-//     } catch (error) {
-//       print('Error fetching tema skripsi data: $error');
-//     }
-//     print(temaSkripsi);
-//   }
-
-//   void temaTypeSelected(int index) {
-//     setState(() {
-//       for (int i = 0; i < temaSkripsi.length; i++) {
-//         temaSkripsi[i]['isSelected'] = false;
-//       }
-//       temaSkripsi[index]['isSelected'] = true;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SafeArea(
-//         child: Stack(
-//           children: [
-//             Padding(
-//               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-//               child: Column(
-//                 children: [
-//                   //Judul screen
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     children: [
-//                       GestureDetector(
-//                         onTap: () {
-//                           Navigator.pop(context);
-//                         },
-//                         child: const Icon(
-//                           IconlyLight.arrow_left_2,
-//                           color: AppColors.white,
-//                           size: 24,
-//                         ),
-//                       ),
-//                       SizedBox(
-//                         child: Center(
-//                           child: Text(
-//                             "Masukan Judul Kamu",
-//                             style: GoogleFonts.lato(
-//                                 fontSize: 26,
-//                                 fontWeight: FontWeight.w900,
-//                                 color: AppColors.orange),
-//                           ),
-//                         ),
-//                       ),
-//                       const Icon(null),
-//                     ],
-//                   ),
-
-//                   //end judul halaman
-//                   const SizedBox(
-//                     height: 20,
-//                   ),
-//                   //masukan Tema skripsi
-//                   SizedBox(
-//                     height: 100,
-//                     width: double.infinity,
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         Text(
-//                           "Masukan Tema",
-//                           style: GoogleFonts.lato(
-//                             color: AppColors.white,
-//                             fontSize: 22,
-//                             fontWeight: FontWeight.w700,
-//                           ),
-//                         ),
-//                         const SizedBox(
-//                           height: 16,
-//                         ),
-
-//                         //button
-//                         Expanded(
-//                           child: ListView.separated(
-//                             scrollDirection: Axis.horizontal,
-//                             itemBuilder: (context, index) {
-//                               final temaText = temaSkripsi.keys
-//                                   .elementAt(index); // Ambil teks tema skripsi
-//                               final isSelected = temaSkripsi[temaText] ??
-//                                   false; // Ambil status seleksi
-
-//                               return TemaSkripsi(
-//                                 text: temaText,
-//                                 isSelected: isSelected,
-//                                 onTap: () {
-//                                   temaTypeSelected(index);
-//                                 },
-//                               );
-//                             },
-//                             separatorBuilder: (context, index) {
-//                               return const SizedBox(
-//                                 width: 10,
-//                               );
-//                             },
-//                             itemCount: temaSkripsi.length,
-//                           ),
-//                         )
-//                       ],
-//                     ),
-//                   ),
-//                   //end tema skripsi
-//                   const SizedBox(
-//                     height: 30,
-//                   ),
-//                   //Texfield
-//                   SizedBox(
-//                     width: double.infinity,
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         Text(
-//                           "Input Deskripsi Judul",
-//                           style: GoogleFonts.lato(
-//                             color: AppColors.white,
-//                             fontSize: 22,
-//                             fontWeight: FontWeight.w700,
-//                           ),
-//                         ),
-//                         const SizedBox(
-//                           height: 16,
-//                         ),
-//                         MyTextField(
-//                           onChanged: (value) {},
-//                           controller: judul,
-//                           hintText: "Masukan Judul Anda Disini...",
-//                           labelText: "Judul Anda...",
-//                           maxLines: 1,
-//                         ),
-//                         const SizedBox(
-//                           height: 16,
-//                         ),
-//                         MyTextField(
-//                           onChanged: (value) {},
-//                           controller: deskripsiJudul,
-//                           hintText: "Deskripsi Judul Anda...",
-//                           labelText: "Dekripsi Judul Anda...",
-//                           maxLines: 5,
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             Align(
-//               alignment: Alignment.bottomCenter,
-//               child: Container(
-//                 padding: const EdgeInsets.only(
-//                     left: 10, right: 10, bottom: 20, top: 20),
-//                 decoration: const BoxDecoration(
-//                   color: AppColors.primary,
-//                   border: Border(
-//                     top: BorderSide(
-//                       color: Color(0xff2A3244),
-//                     ),
-//                   ),
-//                 ),
-//                 child: Row(
-//                   children: [
-//                     const SizedBox(
-//                       height: 30,
-//                     ),
-//                     Flexible(
-//                       fit: FlexFit.tight,
-//                       child: TextButton(
-//                         onPressed: () {
-//                           simpanData();
-//                           // Navigator.push(
-//                           //   context,
-//                           //   MaterialPageRoute(
-//                           //     builder: (context) => const LoadingScreen2(),
-//                           //   ),
-//                           // );
-//                         },
-//                         child: Container(
-//                           padding: const EdgeInsets.symmetric(
-//                             horizontal: 10,
-//                             vertical: 20,
-//                           ),
-//                           decoration: BoxDecoration(
-//                             borderRadius: BorderRadius.circular(10),
-//                             color: AppColors.violet,
-//                           ),
-//                           child: Row(
-//                             mainAxisAlignment: MainAxisAlignment.center,
-//                             children: [
-//                               Text(
-//                                 "Berikan Ke Kaprodi",
-//                                 style: GoogleFonts.lato(
-//                                     fontSize: 24,
-//                                     fontWeight: FontWeight.w800,
-//                                     color: AppColors.white),
-//                                 textAlign: TextAlign.center,
-//                               ),
-//                               const SizedBox(
-//                                 width: 10,
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class MasukanJudul extends StatefulWidget {
   const MasukanJudul({Key? key}) : super(key: key);
 
@@ -311,25 +22,24 @@ class _MasukanJudulState extends State<MasukanJudul> {
   String activeUserEmail = ""; // Simpan email user yang aktif
   final TextEditingController judul = TextEditingController();
   final TextEditingController deskripsiJudul = TextEditingController();
-  Map<String, bool> temaSkripsi =
-      {}; // Gunakan Map<String, bool> untuk tema skripsi
+  Map<String, bool> temaSkripsi = {};
   String selectedTema = "";
 
   @override
   void initState() {
     super.initState();
-    getUserInfo();
+    // getUserInfo();
     getTemaSkripsiData();
   }
 
-  void getUserInfo() async {
-    final User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      setState(() {
-        activeUserEmail = user.email ?? "";
-      });
-    }
-  }
+  // void getUserInfo() async {
+  //   final User? user = FirebaseAuth.instance.currentUser;
+  //   if (user != null) {
+  //     setState(() {
+  //       activeUserEmail = user.email ?? "";
+  //     });
+  //   }
+  // }
 
   void getTemaSkripsiData() async {
     try {
@@ -351,10 +61,9 @@ class _MasukanJudulState extends State<MasukanJudul> {
 
   void temaTypeSelected(String tema) {
     setState(() {
-      temaSkripsi.updateAll(
-          (key, value) => false); // Setel semua tema menjadi tidak terpilih
-      temaSkripsi[tema] = true; // Setel tema yang dipilih menjadi terpilih
-      selectedTema = tema; // Simpan tema yang dipilih
+      temaSkripsi.updateAll((key, value) => false);
+      temaSkripsi[tema] = true;
+      selectedTema = tema;
     });
   }
 
@@ -362,7 +71,6 @@ class _MasukanJudulState extends State<MasukanJudul> {
   bool isDeskripsiEmpty = false;
 
   void simpanData() async {
-    // Validasi input judul dan deskripsi
     if (judul.text.isEmpty) {
       setState(() {
         isJudulEmpty = true;
@@ -384,26 +92,66 @@ class _MasukanJudulState extends State<MasukanJudul> {
         isDeskripsiEmpty = false;
       });
     }
+    Future<List<Map<String, dynamic>>?> _getTentangJudulData(
+        String userEmail) async {
+      try {
+        final userDoc =
+            FirebaseFirestore.instance.collection('users').doc(userEmail);
+        final docSnapshot = await userDoc.get();
+
+        if (docSnapshot.exists) {
+          final data = docSnapshot.data();
+          final List<Map<String, dynamic>> tentangJudulDataList = [];
+
+          for (int i = 0; data?['tentangJudul-$i'] != null; i++) {
+            final tentangJudulDataMap = data?['tentangJudul-$i'];
+            tentangJudulDataList.add(
+              Map<String, dynamic>.from(tentangJudulDataMap),
+            );
+          }
+
+          return tentangJudulDataList;
+        }
+      } catch (error) {
+        print('Error fetching data: $error');
+      }
+      return null;
+    }
 
     try {
-      final newData = {
-        'tentangJudul': {
-          'deskripsi': deskripsiJudul.text,
-          'judul': judul.text,
-          'tema': selectedTema,
-        },
-      };
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final activeUserEmail = user.email;
+        final tentangJudulData =
+            await _getTentangJudulData(activeUserEmail.toString());
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(activeUserEmail)
-          .update(
-              newData); // Menggunakan update untuk memperbarui dokumen yang sudah ada
+        if (tentangJudulData != null) {
+          // Menentukan nomor unik untuk kunci
+          final nomor = tentangJudulData.length;
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const LoadingScreen2()),
-      );
+          // Buat objek data baru
+          final newData = {
+            'tema': selectedTema,
+            'deskripsi': deskripsiJudul.text,
+            'judul': judul.text,
+            'ulasan': "Belum Diulas",
+            'waktu': FieldValue.serverTimestamp(),
+          };
+
+          // Perbarui dokumen Firestore dengan kunci yang sesuai
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(activeUserEmail)
+              .update({
+            'tentangJudul-$nomor': newData,
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoadingScreen2()),
+          );
+        }
+      }
     } catch (error) {
       print('Error saving data: $error');
     }
@@ -420,20 +168,18 @@ class _MasukanJudulState extends State<MasukanJudul> {
               child: Column(
                 children: [
                   const MyNavBar(judul: "Input Judul Kamu"),
-
                   const SizedBox(
                     height: 20,
                   ),
                   // masukan Tema skripsi
                   SizedBox(
-                    height: 350,
-                    width: double.infinity,
+                    height: 470,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "Masukan Tema",
-                          style: TextStyle(
+                          style: GoogleFonts.lato(
                             color: Colors.white,
                             fontSize: 22,
                             fontWeight: FontWeight.w700,
@@ -442,7 +188,7 @@ class _MasukanJudulState extends State<MasukanJudul> {
                         const SizedBox(
                           height: 16,
                         ),
-                        Expanded(
+                        Flexible(
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
@@ -508,7 +254,7 @@ class _MasukanJudulState extends State<MasukanJudul> {
                                 controller: deskripsiJudul,
                                 hintText: "Deskripsi Judul Anda...",
                                 labelText: "Dekripsi Judul Anda...",
-                                maxLines: 10,
+                                maxLines: 6,
                               ),
                             ],
                           ),
@@ -516,8 +262,6 @@ class _MasukanJudulState extends State<MasukanJudul> {
                       ],
                     ),
                   ),
-
-                  // ... (kode lainnya)
                 ],
               ),
             ),
@@ -552,7 +296,7 @@ class _MasukanJudulState extends State<MasukanJudul> {
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: AppColors.violet,
+                            color: AppColors.blue,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

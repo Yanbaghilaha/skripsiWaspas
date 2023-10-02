@@ -4,13 +4,18 @@ import 'package:lottie/lottie.dart';
 import 'package:spk_app/material/colors.dart';
 
 class PopUp3 extends StatelessWidget {
-  final String text, lottieAssets;
+  final String text, lottieAssets, buttonText;
+  final Color textColor;
   final VoidCallback? onAddPressed;
+  final bool isTwoTimes;
   const PopUp3({
     super.key,
     required this.text,
     required this.lottieAssets,
     this.onAddPressed,
+    this.textColor = AppColors.green,
+    this.buttonText = "Selesai",
+    this.isTwoTimes = true,
   });
 
   @override
@@ -56,13 +61,14 @@ class PopUp3 extends StatelessWidget {
             Expanded(
               child: TextButton(
                 onPressed: () {
+                  isTwoTimes ? Navigator.pop(context) : Navigator.pop(context);
                   Navigator.pop(context);
                 },
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.green,
+                    color: textColor,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -70,7 +76,7 @@ class PopUp3 extends StatelessWidget {
                       horizontal: 20,
                     ),
                     child: Text(
-                      "Selesai",
+                      buttonText,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.lato(
                         fontSize: 24,

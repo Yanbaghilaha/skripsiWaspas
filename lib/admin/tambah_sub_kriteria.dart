@@ -55,7 +55,6 @@ class _TambahSubKriteriaState extends State<TambahSubKriteria> {
     kriteriaController.text = widget.kriteria;
   }
 
-  //samaikan dengan nama metode (tambahDataSubKriteria)//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,6 +121,7 @@ class _TambahSubKriteriaState extends State<TambahSubKriteria> {
                                             int.tryParse(value) ?? 2;
                                       });
                                     },
+                                    keyboardType: true,
                                     textAlign: TextAlign.center,
                                     isShowLabelText: false,
                                     textColor: AppColors.green,

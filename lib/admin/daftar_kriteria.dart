@@ -39,8 +39,6 @@ class _DaftarKriteriaState extends State<DaftarKriteria> {
       }
     }
 
-    //hapus data kriteria
-
     return Scaffold(
         body: SafeArea(
       child: Stack(

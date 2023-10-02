@@ -46,7 +46,7 @@ class _TambahDataKriteriaState extends State<TambahDataKriteria> {
     try {
       // Membuat data yang akan ditambahkan ke Firestore
       Map<String, dynamic> newData = {
-        'bobot': 0,
+        'bobot': 0.0,
         'jenis': jenis,
         'nama': kriteria,
       };
@@ -81,7 +81,7 @@ class _TambahDataKriteriaState extends State<TambahDataKriteria> {
               child: Column(
                 children: [
                   const MyNavBar(
-                    judul: " Kriteria",
+                    judul: "Tambah Kriteria",
                   ),
                   const SizedBox(
                     height: 30,
@@ -192,16 +192,67 @@ class _TambahDataKriteriaState extends State<TambahDataKriteria> {
                                 controller: TextEditingController(),
                                 buttonColor: AppColors.blue,
                                 onPressed: () async {
-                                  tambahKriteria();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          TambahSubKriteriaSample(
-                                        kriteria: kriteria.text,
+                                  if (kriteria.text == '') {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
                                       ),
-                                    ),
-                                  );
+                                      builder: (BuildContext context) {
+                                        return MyPopup(
+                                          height: 507,
+                                          controller: TextEditingController(),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          },
+                                          onlyHaveOneButton: false,
+                                          isTextField: false,
+                                          imageAssets:
+                                              'assets/animation/sad-animation.json',
+                                          judul:
+                                              "Pastikan Memasukan Data Kriteria",
+                                          hintText: "",
+                                          buttonText: "OK",
+                                        );
+                                      },
+                                    );
+                                  } else if (selectedJenisAtribut == '') {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      builder: (BuildContext context) {
+                                        return MyPopup(
+                                          height: 507,
+                                          controller: TextEditingController(),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          },
+                                          onlyHaveOneButton: false,
+                                          isTextField: false,
+                                          imageAssets:
+                                              'assets/animation/sad-animation.json',
+                                          judul:
+                                              "Pastikan Memasukan Jenis Atribut Ya",
+                                          hintText: "",
+                                          buttonText: "OK",
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    tambahKriteria();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => TambahSubKriteria(
+                                          kriteria: kriteria.text,
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 },
                                 judul: "Apa Anda Yakin Ingin Menambahnya",
                                 hintText: "Masukan Tema Skripsi",

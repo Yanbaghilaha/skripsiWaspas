@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:spk_app/home_screen.dart';
 
 import 'package:spk_app/material/colors.dart';
 
@@ -97,11 +96,11 @@ class _LoadingScreen2State extends State<LoadingScreen2> {
                           margin: const EdgeInsets.only(bottom: 30),
                           child: TextButton(
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.popUntil(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => const HomeScreen(),
-                                ),
+                                (route) {
+                                  return route.isFirst;
+                                },
                               );
                             },
                             child: Container(

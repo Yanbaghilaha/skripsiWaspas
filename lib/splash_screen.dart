@@ -7,8 +7,6 @@ import 'package:spk_app/pageview/splash1.dart';
 import 'package:spk_app/pageview/splash2.dart';
 import 'package:spk_app/pageview/splash3.dart';
 
-import 'login.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -60,12 +58,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 isPageLast
                     ? TextButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) {
-                                return const AuthPage();
-                              },
+                              builder: (context) => const AuthPage(),
                             ),
                           );
                         },

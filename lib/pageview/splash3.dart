@@ -24,7 +24,7 @@ class Splash3 extends StatelessWidget {
 
           //selamat Datang
           Text(
-            "Tentukan Tema skripsi yang anda inginkan",
+            "Mulai Yuk",
             style: GoogleFonts.lato(
                 color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
@@ -35,7 +35,7 @@ class Splash3 extends StatelessWidget {
           ),
           //Small text
           Text(
-            "Jelajahi dan Tentukan Tema Tesis Anda dengan Bijak. dengan kuesioner yang kami berikan",
+            "Mari kita mulai perjalanan penentuan tema skripsi Anda dengan cara yang menyenangkan dan informatif!",
             style: GoogleFonts.lato(
                 color: Colors.white,
                 fontSize: 18,

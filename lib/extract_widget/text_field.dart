@@ -3,23 +3,25 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:spk_app/material/colors.dart';
 
 class MyTextField extends StatelessWidget {
-  const MyTextField(
-      {super.key,
-      this.hintText = "",
-      this.labelText = "",
-      this.maxLines = 1,
-      this.readOnly = false,
-      this.showPassword = false,
-      required this.controller,
-      this.keyboardType = false,
-      this.autoFill,
-      this.showHint = false,
-      this.textController = "",
-      this.isShowLabelText = false,
-      this.textAlign = TextAlign.start,
-      this.textColor = AppColors.white2,
-      this.onChanged,
-      this.onEditingComplete});
+  const MyTextField({
+    super.key,
+    this.hintText = "",
+    this.labelText = "",
+    this.maxLines = 1,
+    this.readOnly = false,
+    this.showPassword = false,
+    required this.controller,
+    this.keyboardType = false,
+    this.autoFill,
+    this.showHint = false,
+    this.textController = "",
+    this.isShowLabelText = false,
+    this.textAlign = TextAlign.start,
+    this.textColor = AppColors.white2,
+    this.onChanged,
+    this.onEditingComplete,
+    this.onTap,
+  });
 
   final TextEditingController controller;
   final String hintText, labelText, textController;
@@ -28,7 +30,8 @@ class MyTextField extends StatelessWidget {
   final TextAlign textAlign;
   final Color textColor;
   final bool readOnly, showPassword, keyboardType, showHint, isShowLabelText;
-  final ValueChanged<String>? onChanged, onEditingComplete;
+
+  final ValueChanged<String>? onChanged, onEditingComplete, onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +43,16 @@ class MyTextField extends StatelessWidget {
         },
         textAlign: textAlign,
         maxLines: maxLines,
-        autofocus: true,
         controller: controller,
         readOnly: readOnly,
         onChanged: (value) {
           onChanged!(value);
         },
+        onTap: () {
+          onTap;
+        },
         autocorrect: false,
-        keyboardType: keyboardType ? TextInputType.number : null,
+        keyboardType: keyboardType ? TextInputType.number : TextInputType.name,
         style: GoogleFonts.lato(
           textStyle: TextStyle(
             color: textColor,

@@ -1,8 +1,7 @@
-// ignore_for_file: avoid_print
-
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
@@ -11,7 +10,9 @@ import 'package:spk_app/final_conclusion.dart';
 import '../material/colors.dart';
 
 class DecisionMakingPageReal extends StatefulWidget {
-  const DecisionMakingPageReal({super.key});
+  const DecisionMakingPageReal({
+    super.key,
+  });
 
   @override
   _DecisionMakingPageRealState createState() => _DecisionMakingPageRealState();
@@ -166,7 +167,6 @@ class _DecisionMakingPageRealState extends State<DecisionMakingPageReal> {
       double qi = totalWeightedSumPerRow[i] * 0.5;
       qiFinal.add(qi);
     }
-
     return qiFinal;
   }
 
@@ -183,14 +183,14 @@ class _DecisionMakingPageRealState extends State<DecisionMakingPageReal> {
       double q2 = rowProduct * 0.5;
       q2Values.add(q2);
     }
-
     return q2Values;
   }
 
-  //this last function pliss, i've no idea no more :)
+  /* note:
+    last function plisss,mengsad :'(
+  */
   List<double> totalPerColumn(List<double> data1, List<double> data2) {
     assert(data1.length == data2.length);
-
     List<double> result = List.filled(data1.length, 0.0);
 
     for (int i = 0; i < data1.length; i++) {
@@ -325,7 +325,6 @@ class _DecisionMakingPageRealState extends State<DecisionMakingPageReal> {
           itemCount: alternatif.length,
           itemBuilder: (context, index) {
             bool isLastPage = index == alternatif.length - 1;
-
             return Stack(
               alignment: Alignment.bottomCenter,
               children: [
@@ -444,8 +443,7 @@ class _DecisionMakingPageRealState extends State<DecisionMakingPageReal> {
                                                                   .all(20.0),
                                                           child: Image.asset(
                                                             'assets/emoji/${entry.value}.png', // Sesuaikan nama file gambar
-                                                            width:
-                                                                32, // Sesuaikan ukuran gambar
+                                                            width: 32,
                                                             height: 32,
                                                           ),
                                                         ),
@@ -552,13 +550,55 @@ class _DecisionMakingPageRealState extends State<DecisionMakingPageReal> {
                                     q1Values,
                                     q2Values,
                                   );
+
+                                  Future<void> saveDataToFirestore() async {
+                                    // Ambil alternatif dari widget
+                                    List<String> alternatif1 = alternatif;
+
+                                    // Buat data yang akan Anda simpan
+                                    Map<String, dynamic> hasilPerankingan = {};
+
+                                    // Isi hasilPerankingan dengan alternatif
+                                    for (int i = 0;
+                                        i < alternatif1.length;
+                                        i++) {
+                                      hasilPerankingan[alternatif[i]] =
+                                          totalWeightedSumColumn[i]
+                                              .toStringAsFixed(1);
+                                    }
+
+                                    final user =
+                                        FirebaseAuth.instance.currentUser;
+                                    final currentUser = user?.email;
+
+                                    if (currentUser != null) {
+                                      await FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(currentUser)
+                                          .update({
+                                        'hasilPerankingan': hasilPerankingan,
+                                      });
+
+                                      print(
+                                          'Data berhasil disimpan ke Firestore.');
+                                      print(hasilPerankingan);
+                                    } else {
+                                      // Handle jika pengguna belum masuk
+                                      print(
+                                          'Pengguna belum masuk. Data tidak dapat disimpan.');
+                                    }
+                                  }
+
+                                  saveDataToFirestore();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => FinalConclusion(
-                                          alternatif: alternatif,
-                                          totalWeightedSumColumn:
-                                              totalWeightedSumColumn),
+                                      builder: (context) {
+                                        return FinalConclusion(
+                                            alternatif: alternatif,
+                                            totalWeightedSumColumn:
+                                                totalWeightedSumColumn);
+                                      },
                                     ),
                                   );
                                 },
@@ -575,7 +615,7 @@ class _DecisionMakingPageRealState extends State<DecisionMakingPageReal> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Gaskeun Atuh",
+                                        "Generate",
                                         style: GoogleFonts.lato(
                                             fontSize: 24,
                                             fontWeight: FontWeight.w800,

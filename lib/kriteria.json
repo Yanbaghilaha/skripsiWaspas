@@ -1,62 +1,217 @@
 {
-    "Minat Matkul": {
-        "bobot": 3,
-        "jenis": "Benefit",
-        "nama": "Minat Matkul",
-        "subKriteria": {
-            "Lumayan Minat": 3,
-            "Minat": 4,
-            "Sangat Minat": 5,
-            "Sedikit Minat": 2,
-            "Tidak Minat": 1
-        }
-    },
-    "Nilai Akademis": {
-        "bobot": 0.8,
-        "jenis": "Benefit",
-        "nama": "Nilai Akademiss",
-        "subKriteria": {
-            "A": 5,
-            "B": 4,
-            "C": 3,
-            "D": 2,
-            "E": 1
-        }
-    },
-    "Paham Matkul": {
-        "bobot": 2.2,
-        "jenis": "Benefit",
-        "nama": "Paham Matkul",
-        "subKriteria": {
-            "Lumayan Paham": 3,
-            "Paham": 4,
-            "Sangat Paham": 5,
-            "Sedikit Paham": 2,
-            "Tidak Paham": 1
-        }
-    },
-    "Penguasaan Matkul": {
-        "bobot": 1.5,
-        "jenis": "Benefit",
-        "nama": "Penguasaan Matkul",
-        "subKriteria": {
-            "Lumayan Menguasi": 3,
-            "Menguasi": 4,
-            "Sangat Menguasi": 5,
-            "Sedikit Menguasi": 2,
-            "Tidak Menguasi": 1
-        }
-    },
-    "Penguasan Metode": {
-        "bobot": 2.5,
-        "jenis": "Benefit",
-        "nama": "Penguasan Metode",
-        "subKriteria": {
-            "Lumayan Menguasi": 3,
-            "Menguasi": 4,
-            "Sangat Menguasi": 5,
-            "Sedikit Menguasi": 2,
-            "Tidak Menguasi": 1
+    "__collections__": {
+        "alternatif": {
+            "Data Mining": {
+                "__collections__": {}
+            },
+            "Jaringan": {
+                "__collections__": {}
+            },
+            "Kriptografi": {
+                "__collections__": {}
+            },
+            "Mikrokontroler": {
+                "__collections__": {}
+            },
+            "SPK": {
+                "__collections__": {}
+            },
+            "Sistem Pakar": {
+                "__collections__": {}
+            }
+        },
+        "kriteria": {
+            "Minat Matkul": {
+                "bobot": 3,
+                "jenis": "Benefit",
+                "nama": "Minat Matkul",
+                "subKriteria": {
+                    "Lumayan Minat": 3,
+                    "Tidak Minat": 1,
+                    "Sangat Minat": 5,
+                    "Minat": 4,
+                    "Sedikit Minat": 2
+                },
+                "alternatif": {
+                    "Data Mining": "",
+                    "Kriptografi": "",
+                    "Mikrokontroler": "",
+                    "SPK": "",
+                    "Sistem Pakar": "",
+                    "Jaringan": ""
+                },
+                "__collections__": {}
+            },
+            "Nilai Akademis": {
+                "jenis": "Benefit",
+                "subKriteria": {
+                    "A": 5,
+                    "B": 4,
+                    "C": 3,
+                    "D": 2,
+                    "E": 1
+                },
+                "nama": "Nilai Akademis",
+                "bobot": 0.8,
+                "alternatif": {
+                    "Data Mining": "",
+                    "Kriptografi": "",
+                    "Mikrokontroler": "",
+                    "SPK": "",
+                    "Sistem Pakar": "",
+                    "Jaringan": ""
+                },
+                "__collections__": {}
+            },
+            "Paham Matkul": {
+                "nama": "Paham Matkul",
+                "bobot": 2.2,
+                "jenis": "Benefit",
+                "subKriteria": {
+                    "Sangat Paham": 5,
+                    "Paham": 4,
+                    "Sedikit Paham": 2,
+                    "Lumayan Paham": 3,
+                    "Tidak Paham": 1
+                },
+                "alternatif": {
+                    "Data Mining": "",
+                    "Kriptografi": "",
+                    "Mikrokontroler": "",
+                    "SPK": "",
+                    "Sistem Pakar": "",
+                    "Jaringan": ""
+                },
+                "__collections__": {}
+            },
+            "Penguasaan Matkul": {
+                "jenis": "Benefit",
+                "nama": "Penguasaan Matkul",
+                "subKriteria": {
+                    "Tidak Menguasai": 1,
+                    "Sangat Menguasai": 5,
+                    "Sedikit Menguasai": 2,
+                    "Lumayan Menguasai": 3,
+                    "Menguasai": 4
+                },
+                "bobot": 1.5,
+                "alternatif": {
+                    "Kriptografi": "Kelancaran / Penguasaan materi saat presentasi akhir",
+                    "Data Mining": "Menguasai konsep / Cara kerja Data Mining, OLAP OLTP",
+                    "Mikrokontroler": "- Menguasai Arduino - kefasihan dalam menjelasan presentasi akhir",
+                    "SPK": "Penguasaan tugas harian terakhir (Contoh Kasus) ).",
+                    "Sistem Pakar": "",
+                    "Jaringan": ""
+                },
+                "__collections__": {}
+            },
+            "Penguasan Metode": {
+                "bobot": 2.5,
+                "jenis": "Benefit",
+                "nama": "Penguasan Metode",
+                "subKriteria": {
+                    "Tidak Menguasai": 1,
+                    "Sangat Menguasai": 5,
+                    "Sedikit Menguasai": 2,
+                    "Lumayan Menguasai": 3,
+                    "Menguasai": 4
+                },
+                "alternatif": {
+                    "Data Mining": "Pemahaman Classification, Clustering, dll",
+                    "Jaringan": "Pemahaman Metode Algoritma C4.5, dll",
+                    "Kriptografi": "Pemahaman Hill, Cipher, Affine Cipher, dll",
+                    "Mikrokontroler": "Pemahaman tentang metode pengembangan Arduion",
+                    "SPK": "Penguasaan Metode SAW, MADAM, MABAC, dll",
+                    "Sistem Pakar": "Pemahaman Fuzzy Logic, dll"
+                },
+                "__collections__": {}
+            }
+        },
+        "users": {
+            "admin@gmail.com": {
+                "nama": "Admin",
+                "__collections__": {}
+            },
+            "devan@gmail.com": {
+                "nama": "Devan Aditya",
+                "kelas": "TI-3",
+                "nrp": "14519722",
+                "__collections__": {}
+            },
+            "dikdik@gmail.com": {
+                "kelas": "TI-3",
+                "tentangJudul-0": {
+                    "ulasan": "Belum Diulas",
+                    "tema": "SPK",
+                    "deskripsi": "deskripsi judul tentang judul SPK Menentukan tema skripsi studi kasus STIKOM POltek CIrebon",
+                    "judul": "Sistem Pendukung Keputusan Dalam Menentukan Tema Skripsi Studi Kasus STIKOM POLTEK Cirebon",
+                    "waktu": {
+                        "__datatype__": "timestamp",
+                        "value": {
+                            "_seconds": 1695868512,
+                            "_nanoseconds": 973000000
+                        }
+                    }
+                },
+                "nrp": "14519930",
+                "nama": "Dikdik Yanbaghilaha Pangestu",
+                "hasilPerankingan": {
+                    "Jaringan": "NaN",
+                    "Kriptografi": "NaN",
+                    "Data Mining": "NaN",
+                    "Mikrokontroler": "NaN",
+                    "Sistem Pakar": "NaN",
+                    "SPK": "NaN"
+                },
+                "__collections__": {}
+            },
+            "marina@gmail.com": {
+                "nama": "Marina Silviani",
+                "kelas": "TI-3",
+                "nrp": "14519942",
+                "hasilPerankingan": {
+                    "Jaringan": "4.1",
+                    "Kriptografi": "4.8",
+                    "Data Mining": "4.4",
+                    "Mikrokontroler": "4.7",
+                    "Sistem Pakar": "4.5",
+                    "SPK": "5.5"
+                },
+                "tentangJudul-0": {
+                    "ulasan": "Belum Diulas",
+                    "tema": "Jaringan",
+                    "deskripsi": "Deskripsi Dengan Judul Jaringan",
+                    "judul": "Judul Jaringan",
+                    "waktu": {
+                        "__datatype__": "timestamp",
+                        "value": {
+                            "_seconds": 1695869972,
+                            "_nanoseconds": 375000000
+                        }
+                    }
+                },
+                "__collections__": {}
+            },
+            "puji@gmail.com": {
+                "nama": "Puji Astuti Handayani",
+                "kelas": "TI-3",
+                "nrp": "14519874",
+                "__collections__": {}
+            },
+            "wafiq@gmail.com": {
+                "nama": "Wafiq Ibadullah",
+                "kelas": "TI-Malam",
+                "nrp": "14519199",
+                "hasilPerankingan": {
+                    "Jaringan": "0.0",
+                    "Kriptografi": "0.0",
+                    "Data Mining": "5.5",
+                    "Mikrokontroler": "0.0",
+                    "Sistem Pakar": "0.0",
+                    "SPK": "0.0"
+                },
+                "__collections__": {}
+            }
         }
     }
 }

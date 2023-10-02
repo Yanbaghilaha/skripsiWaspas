@@ -5,8 +5,13 @@ import 'package:iconly/iconly.dart';
 import '../material/colors.dart';
 
 class MyNavBar extends StatelessWidget {
-  const MyNavBar({super.key, required this.judul});
+  const MyNavBar({
+    super.key,
+    required this.judul,
+    this.textColor = AppColors.orange,
+  });
   final String judul;
+  final Color textColor;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -26,10 +31,9 @@ class MyNavBar extends StatelessWidget {
           child: Center(
             child: Text(
               judul,
+              overflow: TextOverflow.ellipsis,
               style: GoogleFonts.lato(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.orange),
+                  fontSize: 26, fontWeight: FontWeight.w900, color: textColor),
             ),
           ),
         ),

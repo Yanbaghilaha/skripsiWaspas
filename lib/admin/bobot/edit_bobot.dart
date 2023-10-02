@@ -1,13 +1,14 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
-import 'package:spk_app/extract_widget/pop_up_success.dart';
-import 'package:spk_app/extract_widget/top_navbar.dart';
-import 'package:spk_app/material/colors.dart';
 
+import '../../extract_widget/pop_up_success.dart';
 import '../../extract_widget/text_field3.dart';
+import '../../extract_widget/top_navbar.dart';
+import '../../material/colors.dart';
 import '../alternatifOrTemaSkripsi/daftar_tema_skripsi.dart';
 
 class EditBobot extends StatefulWidget {
@@ -22,24 +23,26 @@ class EditBobot extends StatefulWidget {
 class _EditBobotState extends State<EditBobot> {
   TextEditingController bobotController = TextEditingController();
   TextEditingController controller = TextEditingController();
+  double totalBobot = 0.0;
 
   //baca data kriteria -> bobot
   Future<QuerySnapshot<Map<String, dynamic>>> _getData() async {
     return FirebaseFirestore.instance.collection('kriteria').get();
   }
 
-  //kalkulasi penjulahan bobot
-  double totalBobot = 0.0;
-  void calculateTotalBobot(List<Map<String, dynamic>> kriteriaList) {
-    double total = 0.0;
-    for (var kriteria in kriteriaList) {
-      total += kriteria['bobot'];
+  double _calculateTotalBobot(
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> kriteriaList,
+  ) {
+    double totalBobot = 0.0;
+    for (final kriteriaDoc in kriteriaList) {
+      final kriteriaData = kriteriaDoc.data();
+      final bobot = kriteriaData['bobot'] as double;
+      totalBobot += bobot;
     }
-    setState(() {
-      totalBobot = total;
-    });
+    return totalBobot;
   }
 
+  //updatebobot
   void _updateBobot(String docId, double newBobot) async {
     try {
       await FirebaseFirestore.instance
@@ -47,6 +50,12 @@ class _EditBobotState extends State<EditBobot> {
           .doc(docId)
           .update({'bobot': newBobot});
       print('Bobot berhasil diperbarui di Firestore.$newBobot');
+
+      final updatedData = await _getData();
+      final updatedKriteriaList = updatedData.docs;
+      totalBobot = _calculateTotalBobot(updatedKriteriaList);
+
+      setState(() {});
     } catch (e) {
       print('Error saat memperbarui bobot: $e');
     }
@@ -58,152 +67,284 @@ class _EditBobotState extends State<EditBobot> {
       body: SafeArea(
         child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.symmetric(
-                vertical: 30,
-                horizontal: 10,
-              ),
-              child: Column(
-                children: [
-                  //judul
-                  const MyNavBar(judul: "Edit Bobot"),
-                  const SizedBox(
-                    height: 30,
-                  ),
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsetsDirectional.symmetric(
+                  vertical: 30,
+                  horizontal: 10,
+                ),
+                child: Column(
+                  children: [
+                    //judul
+                    const MyNavBar(judul: "Edit Bobot"),
+                    const SizedBox(
+                      height: 30,
+                    ),
 
-                  //textbutton
-                  Flexible(
-                    child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                      future: _getData(),
+                    // StreamBuilder untuk memantau data Firestore
+                    StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: FirebaseFirestore.instance
+                          .collection('kriteria')
+                          .snapshots(),
                       builder: (context, snapshot) {
-                        final kriteriaList = snapshot.data?.docs ?? [];
-                        return ListView.separated(
-                          itemBuilder: (context, index) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                            if (snapshot.hasError) {
-                              return Center(
-                                  child: Text('Error: ${snapshot.error}'));
-                            }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        }
 
-                            final kriteria = kriteriaList[index].data();
-                            final kriteriaDocRef =
-                                kriteriaList[index].reference;
-                            double newBobot =
-                                double.parse(kriteria['bobot'].toString());
+                        final kriteriaList = snapshot.data!.docs;
 
-                            return Row(
-                              children: [
-                                Flexible(
-                                  child: MyTextField3(
-                                    kriteria: kriteria['nama'],
-                                    bobot: kriteria['bobot'].toString(),
-                                  ),
-                                ),
+                        // Hitung total bobot
+                        double totalBobot = _calculateTotalBobot(kriteriaList);
 
-                                const SizedBox(
-                                  width: 10,
-                                ),
+                        // Warna teks berdasarkan total bobot
+                        Color textColor;
+                        if (totalBobot > 10) {
+                          textColor = Colors.red;
+                        } else if (totalBobot < 10) {
+                          textColor = AppColors.red;
+                        } else {
+                          textColor = AppColors.green;
+                        }
 
-                                //edit button
-                                GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
+                        return Column(
+                          children: [
+                            ListView.separated(
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  height: 10,
+                                );
+                              },
+                              shrinkWrap: true,
+                              itemCount: kriteriaList.length,
+                              itemBuilder: (context, index) {
+                                final kriteria = kriteriaList[index].data();
+                                final kriteriaDocRef =
+                                    kriteriaList[index].reference;
+
+                                // Buat TextEditingController untuk setiap TextField bobot
+                                TextEditingController bobotController =
+                                    TextEditingController(
+                                        text: kriteria['bobot'].toString());
+
+                                // Tambahkan listener untuk memantau perubahan nilai bobot
+                                bobotController.addListener(() {
+                                  final updatedBobot =
+                                      double.tryParse(bobotController.text) ??
+                                          0.0;
+                                  if (updatedBobot != kriteria['bobot']) {
+                                    // Saat pengguna mengubah nilai dalam TextField
+                                    _updateBobot(
+                                        kriteriaDocRef.id, updatedBobot);
+
+                                    // Hitung total bobot setiap kali nilai berubah
+                                    totalBobot =
+                                        _calculateTotalBobot(kriteriaList);
+                                    setState(() {});
+                                  }
+                                });
+
+                                return Row(
+                                  children: [
+                                    Flexible(
+                                      child: MyTextField3(
+                                        kriteria: kriteria['nama'],
+                                        bobot:
+                                            bobotController, // Hubungkan TextEditingController ke TextField
+                                        textColor:
+                                            textColor, // Gunakan warna teks yang sesuai
                                       ),
-                                      builder: (BuildContext context) {
-                                        return MyPopup(
-                                          isTextField: true,
-                                          height: 307,
-                                          imageAssets:
-                                              "assets/animation/sad-animation.json",
-                                          controller: TextEditingController(
-                                            text: controller.text,
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    // edit button
+                                    GestureDetector(
+                                      onTap: () async {
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
                                           ),
-                                          buttonColor: AppColors.blue,
-                                          onChange: (newVal) {
-                                            newBobot = double.parse(newVal);
-                                          },
-                                          onPressed: () {
-                                            _updateBobot(
-                                              kriteriaDocRef.id,
-                                              newBobot,
-                                            );
-                                            setState(() {});
-
-                                            Navigator.pop(context);
-                                            showModalBottomSheet(
-                                              context: context,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(30),
+                                          builder: (BuildContext context) {
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: MediaQuery.of(context)
+                                                      .viewInsets
+                                                      .bottom),
+                                              child: MyPopup(
+                                                isTextField: true,
+                                                height: 307,
+                                                imageAssets:
+                                                    "assets/animation/sad-animation.json",
+                                                controller:
+                                                    TextEditingController(
+                                                        text: kriteria['bobot']
+                                                            .toString()),
+                                                buttonColor: AppColors.blue,
+                                                onChange: (newVal) {
+                                                  // Di sini, Anda dapat memperbarui nilai bobot dalam TextEditingController jika diperlukan
+                                                },
+                                                onPressed: () async {
+                                                  // Ambil nilai bobot dari TextEditingController
+                                                  final newBobot =
+                                                      double.tryParse(
+                                                              bobotController
+                                                                  .text) ??
+                                                          0.0;
+                                                  _updateBobot(
+                                                      kriteriaDocRef.id,
+                                                      newBobot);
+                                                  // Setelah mengupdate bobot, kita perlu mengambil data terbaru
+                                                  final updatedData =
+                                                      await _getData();
+                                                  final updatedKriteriaList =
+                                                      updatedData.docs;
+                                                  // Hitung total bobot dengan data yang telah diperbarui
+                                                  totalBobot =
+                                                      _calculateTotalBobot(
+                                                          updatedKriteriaList);
+                                                  setState(() {});
+                                                  Navigator.pop(context);
+                                                  showModalBottomSheet(
+                                                    context: context,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30),
+                                                    ),
+                                                    builder: (context) {
+                                                      return const PopUp3(
+                                                        text:
+                                                            "Sukses Tertambah",
+                                                        lottieAssets:
+                                                            "assets/animation/checklist.json",
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                judul: "Masukkan Bobot Baru",
+                                                hintText: "Masukan Bobot",
+                                                buttonText: "Simpan",
                                               ),
-                                              builder: (context) {
-                                                return const PopUp3(
-                                                  text: "Sukses Tertambah",
-                                                  lottieAssets:
-                                                      "assets/animation/checklist.json",
-                                                );
-                                              },
                                             );
                                           },
-                                          judul: "Masukkan Bobot Baru",
-                                          hintText: "Masukan Bobot",
-                                          buttonText: "Simpan",
                                         );
                                       },
-                                    );
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: AppColors.blue,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(20.0),
-                                      child: Icon(
-                                        IconlyBold.edit,
-                                        size: 26,
-                                        color: AppColors.white,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.blue,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(20.0),
+                                          child: Icon(
+                                            IconlyBold.edit,
+                                            size: 26,
+                                            color: AppColors.white,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(
-                              height: 10,
-                            );
-                          },
-                          itemCount: kriteriaList.length,
+                                  ],
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Text(
+                              "Total Bobot: ${totalBobot.toStringAsFixed(1)}",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: textColor,
+                              ),
+                            ),
+                          ],
                         );
                       },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            // Align(
-            //   alignment: Alignment.bottomCenter,
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(20),
-            //     child: Text(
-            //       'Total Bobot: ${totalBobot.toStringAsFixed(2)}',
-            //       style: TextStyle(
-            //         fontSize: 16,
-            //         fontWeight: FontWeight.bold,
-            //         color: _getTextColor(totalBobot),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, bottom: 20, top: 20),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary,
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0xff2A3244),
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.popUntil(
+                            context,
+                            (route) {
+                              return route.isFirst;
+                            },
+                          );
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColors.blue,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                IconlyBold.home,
+                                color: AppColors.white,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "Menu Utama",
+                                style: GoogleFonts.lato(
+                                  fontSize: 24,
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

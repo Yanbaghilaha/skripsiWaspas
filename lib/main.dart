@@ -1,10 +1,10 @@
-// import 'package:firebase_core/firebase_core.dart';
 // ignore_for_file: avoid_print
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:spk_app/admin/daftar_kriteria.dart';
+import 'package:spk_app/controller/auth_page.dart';
 import 'package:spk_app/home_screen.dart';
 import 'package:spk_app/material/colors.dart';
 import 'package:spk_app/splash_screen.dart';
@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/homeScreen': (context) => const HomeScreen(),
         '/daftarKriteria': (context) => const DaftarKriteria(),
+        '/authPage': (context) => const AuthPage(),
       },
       theme: ThemeData(
         appBarTheme: const AppBarTheme(

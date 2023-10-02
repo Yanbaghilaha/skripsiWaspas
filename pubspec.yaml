@@ -40,7 +40,6 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   shared_preferences: ^2.0.12
   flutter_phosphor_icons: ^0.0.1+6
-  
   lottie: ^2.0.0
   dotted_border: ^2.0.0+3
   flutter_staggered_grid_view: ^0.7.0
@@ -48,6 +47,12 @@ dependencies:
   group_radio_button: ^1.3.0
   firebase_auth: ^4.7.2
   cloud_firestore: ^4.8.4
+
+  pdf: 3.10.0
+  path_provider: ^2.1.1
+  open_file: ^3.3.2
+  intl: ^0.18.1
+  excel: ^2.1.0
 
 dev_dependencies:
   flutter_test:

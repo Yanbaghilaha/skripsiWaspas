@@ -8,148 +8,154 @@ class MenuList extends StatelessWidget {
   const MenuList({
     super.key,
     required this.judul,
+    required this.tombolRiwayat,
     required this.subJudul,
     required this.picture,
     required this.rightButton,
+    required this.leftButton,
     required this.ketikaDiTekan,
     required this.color,
     required this.textColor,
   });
 
-  final String judul, subJudul, rightButton, picture;
+  final String judul, subJudul, rightButton, picture, leftButton;
   final Color color, textColor;
-  final Function ketikaDiTekan;
+  final Function ketikaDiTekan, tombolRiwayat;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(
-        right: 10,
-        left: 10,
-        top: 20,
-        bottom: 10,
-      ),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: color,
-      ),
-      child: Column(
-        children: [
-          Text(
-            judul,
-            style: GoogleFonts.lato(
-              fontSize: 24,
-              fontWeight: FontWeight.w900,
-              color: textColor,
+    return GestureDetector(
+      onTap: () {
+        ketikaDiTekan();
+      },
+      child: Container(
+        padding: const EdgeInsets.only(
+          right: 10,
+          left: 10,
+          top: 20,
+          bottom: 10,
+        ),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: color,
+        ),
+        child: Column(
+          children: [
+            Text(
+              judul,
+              style: GoogleFonts.lato(
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                color: textColor,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            subJudul,
-            style: GoogleFonts.lato(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: textColor,
+            const SizedBox(
+              height: 10,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Image.asset(
-            picture,
-            fit: BoxFit.fill,
-            width: 200,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
+            Text(
+              subJudul,
+              style: GoogleFonts.lato(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: textColor,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Image.asset(
+              picture,
+              fit: BoxFit.fill,
+              width: 200,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
 
-          //button
-          Row(
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 20,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color(0xffF8C99F),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Riwayat",
-                        style: GoogleFonts.lato(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.violet),
-                        textAlign: TextAlign.center,
+            //button
+            Row(
+              children: [
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: TextButton(
+                    onPressed: () {
+                      tombolRiwayat();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 20,
                       ),
-                      const SizedBox(
-                        width: 10,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.orange,
                       ),
-                      const Icon(
-                        PhosphorIcons.clock_counter_clockwise_bold,
-                        size: 20,
-                        color: AppColors.violet,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            leftButton,
+                            style: GoogleFonts.lato(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.blue),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Flexible(
-                fit: FlexFit.tight,
-                child: TextButton(
-                  onPressed: () {
-                    ketikaDiTekan();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 20,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Icon(null),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          rightButton,
-                          style: GoogleFonts.lato(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w900,
-                              color: AppColors.violet),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Icon(
-                          PhosphorIcons.arrow_right_bold,
-                          size: 20,
-                          color: AppColors.violet,
-                        ),
-                      ],
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: TextButton(
+                    onPressed: () {
+                      ketikaDiTekan();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 20,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Icon(null),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            rightButton,
+                            style: GoogleFonts.lato(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.violet),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          const Icon(
+                            PhosphorIcons.arrow_right_bold,
+                            size: 20,
+                            color: AppColors.violet,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

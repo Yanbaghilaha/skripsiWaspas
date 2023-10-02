@@ -8,10 +8,13 @@ class MyTextField3 extends StatelessWidget {
     required this.kriteria,
     required this.bobot,
     this.onChanged,
+    required this.textColor,
   });
 
-  final String kriteria, bobot;
+  final String kriteria;
+  final TextEditingController bobot;
   final Function? onChanged;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -75,10 +78,9 @@ class MyTextField3 extends StatelessWidget {
         Flexible(
           flex: 3,
           child: TextField(
-            // onChanged: onChanged,
-            controller: TextEditingController(
-              text: bobot,
-            ),
+            textAlign: TextAlign.center,
+            onChanged: (value) {},
+            controller: bobot,
             autofocus: true,
             keyboardType: TextInputType.number,
             style: GoogleFonts.lato(
